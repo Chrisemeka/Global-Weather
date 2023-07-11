@@ -40,10 +40,10 @@ const updateUI = data => {
 
 const updateCity = async city => {
     
-    const cityInfo = await getCity(city);
-    const weatherInfo = await getWeather(cityInfo.Key);
+    const cityInfo = await getCity(city);// getting city data for the API
+    const weatherInfo = await getWeather(cityInfo.Key);// getting the weather info of the city using the city key data 
 
-    return {
+    return {// return the information gotten as objects for easie use
         cityInfo: cityInfo,
         weatherInfo: weatherInfo
     };
@@ -64,4 +64,15 @@ form.addEventListener('submit', e => {
     }).catch(err => {
         console.log(err);
     });
+
+    //set localstorage
+    localStorage.setItem('city', city);
 });
+//check to see if there is any data in local storage
+if (localStorage.getItem('city')) {
+    updateCity(localStorage.getItem('city')).then(data => {
+        updateUI(data);
+    }).catch(err => {
+        console.log(err);
+    })
+}
