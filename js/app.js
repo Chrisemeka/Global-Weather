@@ -3,10 +3,9 @@ const  card = document.querySelector('.card');
 const details = document.querySelector('.details');
 const time = document.querySelector('img.time');
 const icon = document.querySelector('.icon img');
+const forecast = new Weather();
 
 const updateUI = data => {
-
-    console.log(data);
 
     const cityInfo = data.cityInfo;//getting the city data returned from updateCity function
     const weatherInfo = data.weatherInfo;//getting the weather data returned from updateCity function
@@ -38,17 +37,6 @@ const updateUI = data => {
     }
 }
 
-const updateCity = async city => {
-    
-    const cityInfo = await getCity(city);// getting city data for the API
-    const weatherInfo = await getWeather(cityInfo.Key);// getting the weather info of the city using the city key data 
-
-    return {// return the information gotten as objects for easie use
-        cityInfo: cityInfo,
-        weatherInfo: weatherInfo
-    };
-    
-}
 
 
 form.addEventListener('submit', e => {
@@ -59,7 +47,7 @@ form.addEventListener('submit', e => {
     form.reset();
 
     //update the UI with the city
-    updateCity(city).then(data => {
+    forecast.updateCity(city).then(data => {
         updateUI(data);
     }).catch(err => {
         console.log(err);
@@ -70,7 +58,7 @@ form.addEventListener('submit', e => {
 });
 //check to see if there is any data in local storage
 if (localStorage.getItem('city')) {
-    updateCity(localStorage.getItem('city')).then(data => {
+    forecast.updateCity(localStorage.getItem('city')).then(data => {
         updateUI(data);
     }).catch(err => {
         console.log(err);
